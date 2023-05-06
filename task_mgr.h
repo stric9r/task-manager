@@ -11,10 +11,10 @@
 #define TASK_PRIORITIES 10
 
 
-bool task_mgr_add(void * fp, uint8_t const priority);
+bool task_mgr_add(void const * const fp, uint8_t const priority);
 void task_mgr_remove(uint8_t const priority);
 bool task_mgr_flag_task(uint8_t const priority);
-void task_mgr_task(bool b_is_blocking);
+void task_mgr_task(bool const b_is_blocking);
 
 
 #endif //TASK_MGR_H
