@@ -11,7 +11,7 @@ uint16_t flags[TASK_PRIORITIES] = {0};
 /// @param priority priority of task to add
 ///
 /// @return True if added, false if not
-bool task_mgr_add(void * fp_task, uint8_t const priority)
+bool task_mgr_add(void const * const fp_task, uint8_t const priority)
 {
     bool b_ret = false;
 
@@ -79,7 +79,7 @@ bool task_mgr_flag_task(uint8_t const priority)
 ///
 /// @param b_is_blocking True if task manager runs for ever
 ///                      False if app has its own service loop
-void task_mgr_task(bool b_is_blocking)
+void task_mgr_task(bool const b_is_blocking)
 {
     do
     {
