@@ -60,7 +60,7 @@ int main()
     }
 
 
-    // If you get here, then a task failed to get added fail out
+    // If you get here, then a task failed to get added - fail out of program
     printf("Add task(s) failed\n");
 
 
