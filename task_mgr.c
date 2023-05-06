@@ -86,7 +86,7 @@ void task_mgr_task(bool b_is_blocking)
         // Loop through array
         for(uint8_t idx = 0; idx < TASK_PRIORITIES; idx++)
         {
-            // Only process functions with tasks > 0
+            // Only process functions with flags > 0
             if(flags[idx] > 0)
             {
                 // Only process if function exists
