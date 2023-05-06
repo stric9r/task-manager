@@ -1,31 +1,32 @@
 #include "task_mgr.h"
 
 
-
-(void)(*fp[TASK_PRIORITIES])(void) = {0};
+void (* fp_tasks[TASK_PRIORITIES])(void) = {0};
 uint16_t flags[TASK_PRIORITIES] = {0};
 
 /// Add function to task manager
 /// If slot already occupied, it will be rejected
 ///
-/// @param fp       function pointer (the task)
+/// @param fp_task  function pointer (the task)
 /// @param priority priority of task to add
 ///
 /// @return True if added, false if not
-bool task_mgr_add((void*) fp, uint8_t const priority)
+bool task_mgr_add(void * fp_task, uint8_t const priority)
 {
     bool b_ret = false;
 
-    // Check bounds
-    if(priority >= 0 && priority < TASK_PRIORITIES)
+    if(fp_task != 0)
     {
-        // is slot emtpy?
-        // if so add to it
-        if(0 == fp[priority])
+        // Check bounds
+        if(priority >= 0 && priority < TASK_PRIORITIES)
         {
-            fp[priority] = fp;
-
-            b_ret = true;
+            // is slot emtpy?
+            // if so add to it
+            if(0 == fp_tasks[priority])
+            {
+                fp_tasks[priority] = fp_task;
+                b_ret = true;
+            }
         }
     }
 
@@ -40,11 +41,11 @@ void task_mgr_remove(uint8_t const priority)
     // Check bounds
     if(priority >= 0 && priority < TASK_PRIORITIES)
     {
-        // Clear the slot
-        if(0 == fp[priority])
+        // Clear the slot and flags
+        if(0 != fp_tasks[priority])
         {
-            fp[priority] = (void *)0;
-
+            fp_tasks[priority] = (void *)0;
+            flags[TASK_PRIORITIES] = 0;
         }
     }
 }
@@ -59,14 +60,13 @@ bool task_mgr_flag_task(uint8_t const priority)
     bool b_ret = false;
 
     // Check bounds
-    if(priority >=0 && priority < TASK_PRIORITIES)
+    if(priority >= 0 && priority < TASK_PRIORITIES)
     {
         // is slot emtpy?
-        // if so add to it and increment front
-        if(0 == fp[priority])
+        // if not add flag
+        if(0 != fp_tasks[priority])
         {
             ++flags[priority];
-
             b_ret = true;
         }
     }
@@ -84,16 +84,16 @@ void task_mgr_task(bool b_is_blocking)
     do
     {
         // Loop through array
-        for(uint8_t idx = 0; idx++; idx < TASK_PRIORITIES)
+        for(uint8_t idx = 0; idx < TASK_PRIORITIES; idx++)
         {
             // Only process functions with tasks > 0
             if(flags[idx] > 0)
             {
                 // Only process if function exists
-                if(fp[idx] != 0)
+                if(fp_tasks[idx] != 0)
                 {
                     // Run task
-                    *fp[idx]();
+                    (*fp_tasks[idx])();
 
                     // Decrement flag
                     --flags[idx];
