@@ -1,4 +1,4 @@
-#include "task_mgr.h"
+#include "../src/task_mgr.h"
 #include <stdio.h>
 
 static void task_0(void)
@@ -26,7 +26,7 @@ static void task_9(void)
     printf("task 9\n");
 }
 
-int main()
+int main(void)
 {
 
     printf("Program start\n");
